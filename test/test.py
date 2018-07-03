@@ -14,5 +14,8 @@ class TestClass(unittest.TestCase):
         response = self.myapp.get("/api/v1/rides")
         self.assertEqual(response.status_code, 200)
 
+        response = self.myapp.get("/api/v1/rides/<string:ride_id>")
+        self.assertEqual(response.status_code, 200)
+
 if __name__ == "__main__":
     unittest.main()

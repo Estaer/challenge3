@@ -3,6 +3,7 @@ import psycopg2
 
 class Connection:
 
+
     def __init__(self):
         """ initialize the connection object """
         self.my_connection = psycopg2.connect(
@@ -11,6 +12,8 @@ class Connection:
             password="postgres",
             host="127.0.0.1",
             port="5432")
+
+        self.my_connection.autocommit = True
         self.cursor = self.my_connection.cursor()
 
     def query(self, query):
