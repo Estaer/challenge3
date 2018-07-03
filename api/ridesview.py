@@ -25,4 +25,8 @@ class RideOffer(Resource):
         """returns a ride offer for a specific offer id"""
         return {"result":rides_object.get_single_ride(ride_id)}, 200
                
-        
+class Register(Resource):
+    def post(self):
+        """ method to register a user """
+        return jsonify({"result":rides_object.register_user()})
+        connection.close()        

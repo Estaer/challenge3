@@ -1,6 +1,5 @@
 from data.db import Connection
 from flask_restful import request
-from pprint import pprint
 
 connection = Connection()
 class All_Rides:
@@ -41,3 +40,12 @@ class All_Rides:
         cursor.execute(query,(data["user_id"], data["meetingpoint"], data["departure"], data["destination"], data["slots"]))
         return {"message": "Ride Offer created"}
 
+    def register_user(self):
+        """ method to register a user """
+        cursor = connection.cursor
+        data = request.get_json() 
+        query = ("""INSERT into users ( firstname,
+                        lastname, username, password) 
+                        VALUES(%s, %s, %s, %s)""")
+        cursor.execute(query,(data["firstname"], data["lastname"], data["username"], data["password"]))
+        return {"message": "User registered"}
