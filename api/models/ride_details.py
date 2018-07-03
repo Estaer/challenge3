@@ -30,3 +30,14 @@ class All_Rides:
             return ride 
         else:
             return {"message" : "Ride offer doesnot exist"}
+    
+    def post_ride_offer(self):
+        """ method to return a single ride offer """
+        cursor = connection.cursor
+        data = request.get_json() 
+        query = ("""INSERT into rides ( user_id, meetingpoint,
+                        departure, destination, slots) 
+                        VALUES(%s, %s, %s, %s, %s)""")
+        cursor.execute(query,(data["user_id"], data["meetingpoint"], data["departure"], data["destination"], data["slots"]))
+        return {"message": "Ride Offer created"}
+
