@@ -15,7 +15,7 @@ class All_Rides:
     def get_single_ride(self, ride_id):
         """ method to return a single ride offer """
         cursor = connection.cursor
-        cursor.execute("SELECT * FROM rides WHERE ride_id = %s",[ride_id])
+        cursor.execute("SELECT * FROM rides WHERE ride_id = %s",(ride_id, ))
         row = cursor.fetchone()
         if row:
             ride = {
