@@ -7,7 +7,7 @@ class Connection:
     def __init__(self):
         """ initialize the connection object """
         self.my_connection = psycopg2.connect(
-            database="testdb",
+            database="ridemyway",
             user="postgres",
             password="postgres",
             host="127.0.0.1",
