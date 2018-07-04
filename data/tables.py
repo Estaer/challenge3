@@ -1,5 +1,6 @@
 from db import Connection
 
+
 connect = Connection()
 cursor = connect.cursor
 
@@ -21,10 +22,10 @@ cursor.execute("""CREATE TABLE requests
 cursor.execute("DROP TABLE if exists users")
 cursor.execute("""CREATE TABLE users
         (user_id SERIAL PRIMARY KEY NOT NULL,
-        firstname VARCHAR(50) NOT NULL,
-        lastname VARCHAR(50) NOT NULL,
-        username VARCHAR(50) NOT NULL,
-        password VARCHAR(50) NOT NULL
+        firstname CHAR(50) NOT NULL,
+        lastname CHAR(50) NOT NULL,
+        username CHAR(50) NOT NULL,
+        password CHAR(50) NOT NULL
         );""")
 
 connect.my_connection.commit()
