@@ -1,5 +1,9 @@
 from data.db import Connection
 from flask_restful import request
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 
 connection = Connection()
 class All_Rides:
@@ -15,7 +19,7 @@ class All_Rides:
             ride = {
                     "ride_id" : row[0],
                     "user_id" : row[1],
-                    "meetingpoint" : row[2],
+                    "meetingpoint": row[2],
                     "departure" : row[3].strftime("%Y-%m-%d %H:%M"),
                     "destination" : row[4],
                     "slot" : row[5]
@@ -39,18 +43,21 @@ class All_Rides:
             }
             return ride 
         else:
-            return {"message" : "Ride offer doesnot exist"}
+            return {"message" : "Ride offer doesnot exist"}, 404
 
     def post_ride_offer(self):
         """ method to return a single ride offer """
         cursor = connection.cursor
+        access_token = create_access_token(identity="ride_id")
         data = request.get_json() 
         query = ("""INSERT into rides ( user_id, meetingpoint,
                         departure, destination, slots) 
                         VALUES(%s, %s, %s, %s, %s)""")
         cursor.execute(query,(data["user_id"], data["meetingpoint"], data["departure"], data["destination"], data["slots"]))
-        return {"message": "Ride Offer created"}
-
+        return {"message": "Ride Offer created",
+                "access_token": access_token
+                }
+    
     def register_user(self):
         """ method to register a user """
         cursor = connection.cursor
@@ -68,8 +75,9 @@ class All_Rides:
         query = "SELECT * FROM users WHERE username = %s AND password = %s"
         cursor.execute(query,(data["username"], data["password"]))
         row = cursor.fetchone()
-        if row:
-            return True
+        if row is not None:
+            access_token = create_access_token(identity=data["username"])
+            return { "access_token": access_token }, 200
         else:
             return False
     
@@ -89,9 +97,11 @@ class All_Rides:
         """method to request for a ride offer"""
         cursor = connection.cursor
         data = request.get_json()
+        access_token = create_access_token(identity="request_id")
         query =  """INSERT into requests 
                     (ride_id, user_id, status) VALUES(%s, %s, %s)"""
         cursor.execute(query,(ride_id, data["user_id"], "PENDING"))
+        return {"access token: ":access_token}
 
     @staticmethod
     def check_username(ride_id):
@@ -134,7 +144,10 @@ class All_Rides:
     def manage_request(self, ride_id, request_id):
         """ method to accept or reject a request """
         cursor = connection.cursor
+        access_token = create_access_token(identity="request_id")
         data = request.get_json()
         query =  "UPDATE requests set status = %s WHERE ride_id=%s AND request_id=%s"
         cursor.execute(query,(data["status"], ride_id, request_id))
-        return data["status"]
+        return {"status: ":data["status"],
+                "access token": access_token
+               }
