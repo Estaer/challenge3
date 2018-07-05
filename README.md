@@ -7,7 +7,7 @@ Ride my way App is a carpooling application that provides drivers with the abili
 and passengers to join available ride offers.
 
 ## Getting Started
-`These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.`
+`These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.`
 
 ### Prerequisites
 ```
@@ -15,10 +15,11 @@ and passengers to join available ride offers.
 - python3: The base language used to develop the api endpoints
 - pip: A python package used to install the necessary libraries and dependencies
 - postman: For testing the api endpoints
+```
 
 ### Installing
 
-Type: "git clone https://github.com/Estaer/challenge.git" in your terminal.
+Type "git clone https://github.com/Estaer/challenge.git" in your terminal.
 
 To install the requirements. run:
 pip3 install -r requirements
@@ -74,6 +75,6 @@ To run the tests, make sure you are working under test/, Then run either of the 
 ## Acknowledgments
 
 * Andela 
-* #YOYO
+* YOYO
 * Bootcamp-9
 
