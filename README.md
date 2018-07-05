@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Estaer/challenge3.svg?branch=develop)](https://travis-ci.org/Estaer/challenge3)
+
 [![Maintainability](https://api.codeclimate.com/v1/badges/24e74ab4656aa8f45200/maintainability)](https://codeclimate.com/github/Estaer/challenge3/maintainability)
 
 [![Coverage Status](https://coveralls.io/repos/github/Estaer/challenge3/badge.svg?branch=master)](https://coveralls.io/github/Estaer/challenge3?branch=master)
