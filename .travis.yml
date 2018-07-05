@@ -12,7 +12,7 @@ install:
 
 # command to run tests
 script:
-  - nosetests --with-coverage --cover-test --cover-package=test
+  - python -m pytest test/
   - coverage report
 
   
