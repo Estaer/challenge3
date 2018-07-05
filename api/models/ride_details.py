@@ -5,13 +5,14 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 
-connection = Connection()
+CONNECTION = Connection()
 class All_Rides:
+"""class that handles all major operations on rides"""
 
 
     def get_rides(self):
         """method to return all ride offers"""
-        cursor = connection.cursor
+        cursor = CONNECTION.cursor
         cursor.execute("SELECT * from rides")
         rows = cursor.fetchall()
         ride_rows = []
@@ -19,9 +20,9 @@ class All_Rides:
             ride = {
                     "ride_id" : row[0],
                     "user_id" : row[1],
-                    "meetingpoint": row[2],
+                    "meetingpoint": row[2].strip(),
                     "departure" : row[3].strftime("%Y-%m-%d %H:%M"),
-                    "destination" : row[4],
+                    "destination" : row[4].strip(),
                     "slot" : row[5]
             }
             ride_rows.append(ride)
@@ -29,16 +30,16 @@ class All_Rides:
 
     def get_single_ride(self, ride_id):
         """ method to return a single ride offer """
-        cursor = connection.cursor
+        cursor = CONNECTION.cursor
         cursor.execute("SELECT * FROM rides WHERE ride_id = %s",(ride_id, ))
         row = cursor.fetchone()
         if row:
             ride = {
                     "ride_id" : ride_id,
                     "user_id" : row[1],
-                    "meetingpoint" : row[2],
+                    "meetingpoint" : row[2].strip(),
                     "departure" : row[3].strftime("%Y-%m-%d %H:%M"),
-                    "destination" : row[4],
+                    "destination" : row[4].strip(),
                     "slot" : row[5]
             }
             return ride 
@@ -47,43 +48,52 @@ class All_Rides:
 
     def post_ride_offer(self):
         """ method to return a single ride offer """
-        cursor = connection.cursor
-        access_token = create_access_token(identity="ride_id")
+        cursor = CONNECTION.cursor
         data = request.get_json() 
         query = ("""INSERT into rides ( user_id, meetingpoint,
                         departure, destination, slots) 
                         VALUES(%s, %s, %s, %s, %s)""")
-        cursor.execute(query,(data["user_id"], data["meetingpoint"], data["departure"], data["destination"], data["slots"]))
-        return {"message": "Ride Offer created",
-                "access_token": access_token
-                }
+        cursor.execute(query, (data["user_id"], data["meetingpoint"], data["departure"], data["destination"], data["slots"]))
+        return {"message":"Ride offer created"}
     
+    def check_existance(self, username):
+        """method to check user existance prior to register"""
+        cursor = CONNECTION.cursor
+        cursor.execute("SELECT * FROM users WHERE username = %s",(username, ))
+        row = cursor.fetchone()
+        if row:
+            return True
+        return False
+
+
     def register_user(self):
         """ method to register a user """
-        cursor = connection.cursor
+        cursor = CONNECTION.cursor
         data = request.get_json()
         query = ("""INSERT into users ( firstname,
                         lastname, username, password) 
                         VALUES(%s, %s, %s, %s)""")
         cursor.execute(query,(data["firstname"], data["lastname"], data["username"], data["password"]))
-        return {"message": "User registered"}
+        access_token = create_access_token(identity=data["username"])
+        return access_token
+               
     
     def login(self):
         """method to sign in a user"""
-        cursor = connection.cursor
+        cursor = CONNECTION.cursor
         data = request.get_json()
         query = "SELECT * FROM users WHERE username = %s AND password = %s"
         cursor.execute(query,(data["username"], data["password"]))
         row = cursor.fetchone()
-        if row is not None:
+        if row:
             access_token = create_access_token(identity=data["username"])
-            return { "access_token": access_token }, 200
+            return access_token 
         else:
             return False
     
     def check_for_ride(self, ride_id):
         """method to check for a ride offer"""
-        cursor = connection.cursor
+        cursor = CONNECTION.cursor
         data = request.get_json()
         query =  "SELECT * FROM rides WHERE ride_id = %s"
         cursor.execute(query, (ride_id, ))
@@ -95,18 +105,17 @@ class All_Rides:
 
     def make_request(self, ride_id):
         """method to request for a ride offer"""
-        cursor = connection.cursor
+        cursor = CONNECTION.cursor
         data = request.get_json()
-        access_token = create_access_token(identity="request_id")
         query =  """INSERT into requests 
                     (ride_id, user_id, status) VALUES(%s, %s, %s)"""
         cursor.execute(query,(ride_id, data["user_id"], "PENDING"))
-        return {"access token: ":access_token}
+        return {"message":"Request successfully sent"}
 
     @staticmethod
     def check_username(ride_id):
         """method to map user id to a specific name"""
-        cursor = connection.cursor
+        cursor = CONNECTION.cursor
         cursor.execute("SELECT username FROM users WHERE user_id = %s",(ride_id, ))
         row = cursor.fetchone()
         if row:
@@ -115,15 +124,15 @@ class All_Rides:
 
     def get_requests(self):
         """method to return all ride requests"""
-        cursor = connection.cursor
+        cursor = CONNECTION.cursor
         cursor.execute("SELECT * from requests")
         rows = cursor.fetchall()
         request_rows = []
         for row in rows:
             request = {
                     "request_id" : row[0],
-                    "name" : All_Rides.check_username(row[2]),
-                    "status" : row[3]
+                    "name" : All_Rides.check_username(row[2]).strip(),
+                    "status" : row[3].strip()
             }
             request_rows.append(request)
             
@@ -131,7 +140,7 @@ class All_Rides:
 
     def check_for_request(self, ride_id, request_id):
         """method to check for a specific request """
-        cursor = connection.cursor
+        cursor = CONNECTION.cursor
         data = request.get_json()
         query =  "SELECT * FROM requests WHERE ride_id=%s AND request_id=%s"
         cursor.execute(query, (ride_id, request_id))
@@ -143,11 +152,8 @@ class All_Rides:
 
     def manage_request(self, ride_id, request_id):
         """ method to accept or reject a request """
-        cursor = connection.cursor
-        access_token = create_access_token(identity="request_id")
+        cursor = CONNECTION.cursor
         data = request.get_json()
         query =  "UPDATE requests set status = %s WHERE ride_id=%s AND request_id=%s"
         cursor.execute(query,(data["status"], ride_id, request_id))
-        return {"status: ":data["status"],
-                "access token": access_token
-               }
+        return {"status: ":data["status"]}
