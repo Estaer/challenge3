@@ -8,7 +8,7 @@ cache: pip
 install:
   - pip install -r requirements.txt
   - pip install coveralls
-  - pip inistall flask_jwt_extended
+  - pip install flask_jwt_extended
 
 # command to run tests
 script:
