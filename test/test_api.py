@@ -15,7 +15,7 @@ class TestClass(unittest.TestCase):
         register_response = self.myapp.post("/auth/signup", data = json.dumps(dict(
                                                             firstname = "me",
                                                             lastname = "you",
-                                                            username = "me",
+                                                            username = "user6",
                                                             password = "hddhsd"
                                                             )),
                                                             content_type = 'application/json')
@@ -28,13 +28,13 @@ class TestClass(unittest.TestCase):
         register_response = self.myapp.post("/auth/signup", data = json.dumps(dict(
                                                             firstname = "me",
                                                             lastname = "you",
-                                                            username = "me",
+                                                            username = "user2",
                                                             password = "hddhsd"
                                                             )),
                                                             content_type = 'application/json')
 
         login_response = self.myapp.post("/auth/login", data = json.dumps(dict(
-                                                            username = "me",
+                                                            username = "user2",
                                                             password = "hddhsd"
                                                             )),
                                                             content_type = 'application/json',
@@ -53,14 +53,14 @@ class TestClass(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
     
     def test_get_single_request(self):
-        response = self.myapp.get("/users/rides/1/requests")
+        response = self.myapp.get("/users/rides/12/requests")
         self.assertEqual(response.status_code, 200)
     
     def test_post_ride_offer(self):
         register_response = self.myapp.post("/auth/signup", data = json.dumps(dict(
                                                             firstname = "me",
                                                             lastname = "you",
-                                                            username = "me",
+                                                            username = "user3",
                                                             password = "hddhsd"
                                                             )),
                                                             content_type = 'application/json')
@@ -84,15 +84,15 @@ class TestClass(unittest.TestCase):
         register_response = self.myapp.post("/auth/signup", data = json.dumps(dict(
                                                             firstname = "me",
                                                             lastname = "you",
-                                                            username = "me",
+                                                            username = "user4",
                                                             password = "hddhsd"
                                                             )),
                                                             content_type = 'application/json')
         register_data = json.loads(register_response.data.decode())
         access_token = register_data["access_token"]
     
-        request_response = self.myapp.post("/rides/15/requests", headers = dict(Authorization = "Bearer " + access_token),
-                                                        data = json.dumps(dict(user_id = 6)),
+        request_response = self.myapp.post("/rides/13/requests", headers = dict(Authorization = "Bearer " + access_token),
+                                                       
                                                             content_type = 'application/json',
                                                             )
         self.assertEqual(request_response.status_code, 201)
@@ -103,18 +103,18 @@ class TestClass(unittest.TestCase):
         register_response = self.myapp.post("/auth/signup", data = json.dumps(dict(
                                                             firstname = "me",
                                                             lastname = "you",
-                                                            username = "me",
+                                                            username = "user5",
                                                             password = "hddhsd"
                                                             )),
                                                             content_type = 'application/json')
         register_data = json.loads(register_response.data.decode())
         access_token = register_data["access_token"]
     
-        manage_request_response = self.myapp.put("/users/rides/15/requests/12", headers = dict(Authorization = "Bearer " + access_token),
+        manage_request_response = self.myapp.put("/users/rides/12/requests/17", headers = dict(Authorization = "Bearer " + access_token),
                                                         data = json.dumps(dict(status = "Rejected")),
                                                             content_type = 'application/json',
                                                             )
-        self.assertEqual(manage_request_response.status_code, 200)
+        self.assertEqual(manage_request_response.status_code, 201)
         response_data = json.loads(manage_request_response.data.decode())
         self.assertTrue(response_data["status"], "Accepted")
     #tests for invalid urls
