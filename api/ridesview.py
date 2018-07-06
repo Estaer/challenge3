@@ -1,4 +1,4 @@
-"""this contains methods for the api endpoints"""
+"""this contains views for the api endpoints"""
 from flask_restful import Resource, request, reqparse
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
 from data.db import Connection
@@ -10,7 +10,7 @@ rides_object = RideModel()
 
 
 class Ride(Resource):
-    """class for a Rides resource"""
+    """class for a Ride resource"""
 
 
     def get(self):

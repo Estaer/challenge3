@@ -1,9 +1,9 @@
-from data.db import Connection
+import psycopg2
+from flask_jwt_extended import create_access_token
 from flask_restful import request
-from flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity
-)
+from data.db import Connection
+
+
 
 connection = Connection()
 class RideModel:
@@ -41,21 +41,31 @@ class RideModel:
                     "departure" : row[3].strftime("%Y-%m-%d %H:%M"),
                     "destination" : row[4].strip(),
                     "slot" : row[5]
-            }
-            return ride 
+                   }
+            return ride
         else:
             return False
 
     def post_ride_offer(self, user_id):
         """ method to return a single ride offer """
-        cursor = connection.cursor
-        data = request.get_json() 
-        query = ("""INSERT into rides ( user_id, meetingpoint,
-                        departure, destination, slots) 
-                        VALUES(%s, %s, %s, %s, %s)""")
-        cursor.execute(query, (user_id, data["meetingpoint"], data["departure"], data["destination"], data["slots"]))
-        return {"message":"Ride offer created"}
-    
+        try:
+
+            cursor = connection.cursor
+            data = request.get_json() 
+            query = ("""INSERT into rides ( user_id, meetingpoint,
+                            departure, destination, slots) 
+                            VALUES(%s, %s, %s, %s, %s)""")
+            cursor.execute(query, (user_id, 
+                                    data["meetingpoint"], 
+                                    data["departure"], 
+                                    data["destination"],
+                                    data["slots"]))
+            return {"message":"Ride offer created"}
+
+        except psycopg2.DataError as d:
+             return {"message":"Invalid date format"}
+
+
     def check_existance(self, username):
         """method to check user existance prior to register"""
         cursor = connection.cursor
@@ -71,7 +81,7 @@ class RideModel:
         cursor = connection.cursor
         data = request.get_json()
         query = ("""INSERT into users ( firstname,
-                        lastname, username, password) 
+                        lastname, username, password)
                         VALUES(%s, %s, %s, %s)""")
         cursor.execute(query,(data["firstname"], data["lastname"], data["username"], data["password"]))
         sql = ("SELECT user_id from users where username = %s ")
@@ -82,8 +92,7 @@ class RideModel:
             return access_token
         else:
             return False
-               
-    
+
     def login(self):
         """method to sign in a user"""
         cursor = connection.cursor
@@ -96,7 +105,7 @@ class RideModel:
             return access_token 
         else:
             return False
-    
+
     def check_for_ride(self, ride_id):
         """method to check for a ride offer"""
         cursor = connection.cursor
