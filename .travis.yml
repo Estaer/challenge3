@@ -12,7 +12,7 @@ services:
 before_script:
   - psql -c 'create database ridemyway;' -U postgres
   - psql -c 'create database testdb;' -U postgres
-  - psql -c "CREATE USER postgres WITH PASSWORD 'postgres';" -U postgres
+  - psql -c "ALTER USER postgres PASSWORD 'postgres' ;" -U postgres
   - cd api/database
   - python db.py
   - cd ../..
