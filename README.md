@@ -2,7 +2,7 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/24e74ab4656aa8f45200/maintainability)](https://codeclimate.com/github/Estaer/challenge3/maintainability)
 
-[![Coverage Status](https://coveralls.io/repos/github/Estaer/challenge3/badge.svg?branch=master)](https://coveralls.io/github/Estaer/challenge3?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/Estaer/challenge3/badge.svg?branch=develop)](https://coveralls.io/github/Estaer/challenge3?branch=develop)
 
 # RIDE MY WAY
 Ride my way App is a carpooling application that provides drivers with the ability to create ride offers
