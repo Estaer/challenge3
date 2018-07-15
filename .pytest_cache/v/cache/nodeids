@@ -1,0 +1,14 @@
+[
+  "api/test/test_api.py::TestClass::test_get_all_rides",
+  "api/test/test_api.py::TestClass::test_get_invalid_get_url",
+  "api/test/test_api.py::TestClass::test_get_invalid_post_offer_url",
+  "api/test/test_api.py::TestClass::test_get_invalid_post_request_url",
+  "api/test/test_api.py::TestClass::test_get_invalid_put_url",
+  "api/test/test_api.py::TestClass::test_get_single_request",
+  "api/test/test_api.py::TestClass::test_get_single_ride",
+  "api/test/test_api.py::TestClass::test_login",
+  "api/test/test_api.py::TestClass::test_make_request",
+  "api/test/test_api.py::TestClass::test_manage_request",
+  "api/test/test_api.py::TestClass::test_post_ride_offer",
+  "api/test/test_api.py::TestClass::test_register_user"
+]

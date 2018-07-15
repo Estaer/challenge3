@@ -1,17 +1,16 @@
+from api.database.db import Connection
+
 import psycopg2
 from flask_jwt_extended import create_access_token
 from flask_restful import request
-from data.db import Connection
 
 
-
-connection = Connection()
 class RideModel:
     """class that handles all major operations on rides"""
 
-
     def get_rides(self):
         """method to return all ride offers"""
+        connection = Connection()
         cursor = connection.cursor
         cursor.execute("SELECT * from rides")
         rows = cursor.fetchall()
@@ -30,6 +29,7 @@ class RideModel:
 
     def get_single_ride(self, ride_id):
         """ method to return a single ride offer """
+        connection = Connection()
         cursor = connection.cursor
         cursor.execute("SELECT * FROM rides WHERE ride_id = %s",(ride_id, ))
         row = cursor.fetchone()
@@ -49,7 +49,7 @@ class RideModel:
     def post_ride_offer(self, user_id):
         """ method to return a single ride offer """
         try:
-
+            connection = Connection()
             cursor = connection.cursor
             data = request.get_json() 
             query = ("""INSERT into rides ( user_id, meetingpoint,
@@ -68,6 +68,7 @@ class RideModel:
 
     def check_existance(self, username):
         """method to check user existance prior to register"""
+        connection = Connection()
         cursor = connection.cursor
         cursor.execute("SELECT * FROM users WHERE username = %s",(username, ))
         row = cursor.fetchone()
@@ -78,6 +79,7 @@ class RideModel:
 
     def register_user(self):
         """ method to register a user """
+        connection = Connection()
         cursor = connection.cursor
         data = request.get_json()
         query = ("""INSERT into users ( firstname,
@@ -95,6 +97,7 @@ class RideModel:
 
     def login(self):
         """method to sign in a user"""
+        connection = Connection()
         cursor = connection.cursor
         data = request.get_json()
         query = "SELECT * FROM users WHERE username = %s AND password = %s"
@@ -108,6 +111,7 @@ class RideModel:
 
     def check_for_ride(self, ride_id):
         """method to check for a ride offer"""
+        connection = Connection()
         cursor = connection.cursor
         query =  "SELECT * FROM rides WHERE ride_id = %s"
         cursor.execute(query, (ride_id, ))
@@ -119,6 +123,7 @@ class RideModel:
 
     def make_request(self, ride_id, user_id):
         """method to request for a ride offer"""
+        connection = Connection()
         cursor = connection.cursor
         query =  """INSERT into requests 
                     (ride_id, user_id, status) VALUES(%s, %s, %s)"""
@@ -128,6 +133,7 @@ class RideModel:
     @staticmethod
     def check_username(ride_id):
         """method to map user id to a specific name"""
+        connection = Connection()
         cursor = connection.cursor
         cursor.execute("SELECT username FROM users WHERE user_id = %s",(ride_id, ))
         row = cursor.fetchone()
@@ -137,6 +143,7 @@ class RideModel:
 
     def get_requests(self, ride_id):
         """method to return all requests for a given ride offer"""
+        connection = Connection()
         cursor = connection.cursor
         cursor.execute("SELECT * from requests WHERE ride_id = %s",(ride_id, ))
         rows = cursor.fetchall()
@@ -152,6 +159,7 @@ class RideModel:
 
     def check_for_request(self, ride_id, request_id):
         """method to check for a specific request """
+        connection = Connection()
         cursor = connection.cursor
         data = request.get_json()
         query =  "SELECT * FROM requests WHERE ride_id=%s AND request_id=%s"
@@ -164,6 +172,7 @@ class RideModel:
 
     def manage_request(self, ride_id, request_id):
         """ method to accept or reject a request """
+        connection = Connection()
         cursor = connection.cursor
         data = request.get_json()
         query =  "UPDATE requests set status = %s WHERE ride_id=%s AND request_id=%s"
