@@ -1,0 +1,8 @@
+[run]
+source=
+   ./api/
+omit=
+   ./venv/*,
+   ./api/test/*,
+   ./api*\__init__.py
+   

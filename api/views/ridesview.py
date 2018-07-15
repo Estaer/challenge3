@@ -1,22 +1,18 @@
-"""this contains methods for the api endpoints"""
+from api.database.db import Connection
+from api.models.ride_details import RideModel
+
 from flask_restful import Resource, request, reqparse
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
-from data.db import Connection
-from .models.ride_details import RideModel
 
 
-connection = Connection()
 rides_object = RideModel()
 
 
 class Ride(Resource):
-    """class for a Rides resource"""
-
-
+    """class for a Ride resource"""
     def get(self):
         """ method to fetch all ride offers """
         return {"Available ride offers":rides_object.get_rides()}, 200
-        connection.close()
 
     @jwt_required
     def post(self):
@@ -34,7 +30,6 @@ class Ride(Resource):
             if str(records).strip() == "":
                 return {"message": "Fill in the empty fields"}, 400
         return rides_object.post_ride_offer(user_id), 201
-        connection.close()
 
 
 class RideOffer(Resource):
@@ -47,12 +42,10 @@ class RideOffer(Resource):
             return {"Ride":rides_object.get_single_ride(ride_id)}, 200
         else:
             return {"message" : "Ride offer doesnot exist"}, 404
-        
 
 
 class Register(Resource):
     """class for a Register resource"""
-
 
     def post(self):
         """ method to register a user """
@@ -74,12 +67,10 @@ class Register(Resource):
                    }, 201
 
         return {"message": "Username already exists."}, 405
-        connection.close()
 
 
 class Login(Resource):
     """class for a Login resource"""
-
 
     def post(self):
         """ method to sign in a user """
@@ -95,11 +86,10 @@ class Login(Resource):
                    }, 200
         else:
             return {"message":"Wrong username or password"}, 401
-        connection.close()
+
 
 class MakeRequest(Resource):
     """class for a MakeRequest resource"""
-
 
     @jwt_required
     def post(self, ride_id):
@@ -109,8 +99,7 @@ class MakeRequest(Resource):
             rides_object.make_request(ride_id, user_id)
             return rides_object.make_request(ride_id, user_id), 201
         else:
-            return {"Message" : "Ride offer doesnot exist"}, 404
-        connection.close()
+            return {"Message" : "Ride offer does not exist"}, 404
 
     def get(self, ride_id):
         """ method to fetch requests to a specific ride"""
@@ -121,13 +110,15 @@ class MakeRequest(Resource):
                    }, 200
         else:
             return {"message":"No results found"}, 404
-        connection.close()
 
     @jwt_required
     def put(self, ride_id, request_id):
         """ method to accept or reject a ride request """
-        user_id = get_jwt_identity()
+        # user_id = get_jwt_identity()
         data = request.get_json()
+        args_parser = reqparse.RequestParser()
+        args_parser.add_argument("status", type=str, required=True)
+        args_parser.parse_args()
         for records in data.values():
             if str(records).strip() == "":
                 return {"message": "Fill in the missing fields"}, 400
@@ -135,7 +126,6 @@ class MakeRequest(Resource):
         if rides_object.check_for_request(ride_id, request_id):
             status = rides_object.manage_request(ride_id, request_id)
             return {"status": status,
-                    "message":"Status updated successfully"}, 201
+                    "message": "Status updated successfully"}, 201
         else:
-            return {"Message" : "Ride request doesnot exist"}, 404
-        connection.close()
+            return {"Message": "Ride request does not exist"}, 404

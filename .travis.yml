@@ -1,20 +1,23 @@
 language: python
 python:
   - "3.6"
-  
-cache: pip
-  
-# command to install dependencies
+cache: pip3
+
 install:
-  - pip install -r requirements.txt
+  - pip3 install -r requirements.txt
   - pip install coveralls
-  - pip install flask_jwt_extended
 
-# command to run tests
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database ridemyway;' -U postgres
+  - psql -c 'create database testdb;' -U postgres
+  - psql -c "CREATE USER postgres WITH PASSWORD 'postgres';" -U postgres
+  - cd api/database
+  - python db.py
+  - cd ../..
 script:
-  - python -m pytest --cov=. test/test_api
-  - coverage report
-
-  
+    - coverage run -m unittest
+    - coverage report
 after_success:
-  - coveralls
+    - coveralls
