@@ -15,7 +15,7 @@ class Connection:
                                                           password="postgres", host="localhost", port="5432")
                 else:
                     self.my_connection = psycopg2.connect(database="ridemyway", user="postgres",
-                                                          password="", host="localhost", port="5432")
+                                                          password="postgres", host="localhost", port="5432")
 
             self.my_connection.autocommit = True
             self.cursor = self.my_connection.cursor()

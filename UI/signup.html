@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ride My Way</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="new.css" />
+    <script src="main.js">
+    
+    </script>
+</head>
+<body class="bckimg">
+
+ <div class="loginform"> 
+     <h2 class="ridedescription">Signup</h2>
+     <form id="form_login" action="#">
+                <p class="ridedescription" class="ridedescription">First Name</p>
+                <p>
+                    <input class="ridedescription" type="text" id="fname" placeholder="firstname" required/>
+                </p>
+
+                <p class="ridedescription">Last Name</p>
+                <p>
+                    <input class="ridedescription" type="text" id="lname" placeholder="lastname" required />
+                </p>
+
+                <p class="ridedescription">Username</p>
+                <p>
+                    <input class="ridedescription" type="text" id="uname" placeholder="username" required/>
+                </p>
+
+                <p class="ridedescription">Password</p>
+                <p >
+                    <input class="ridedescription" type="password" id="pass" placeholder="password" required/>
+                </p>
+                <p>
+                        <input class="ridedescription" type="submit" id="password" value="Signup" />
+                 </p>
+                 <p class="ridedescription">
+                        Already a user? 
+                </p>
+                <p><a class="ridedescription" href="login.html">LOGIN HERE</a></p>
+            </form>
+</div>
+</body>
+<script>
+    form_login = document.getElementById("form_login")
+    
+    if(form_login.addEventListener){
+        form_login.addEventListener("submit", signup, false);  
+    }
+
+function signup(e){
+    e.preventDefault();
+
+    fetch("http://127.0.0.1:5000/auth/signup",{
+        method:"POST",
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+                'firstname':document.getElementById("fname").value,
+                'lastname':document.getElementById("lname").value,
+                'username':document.getElementById("uname").value,
+                'password':document.getElementById("pass").value
+        })
+    
+
+    })
+    .then(function(response){
+        return response.json()
+    })
+    .then(function(data){
+        console.log(data)
+        if(data.message=="User registered"){
+            window.location.href ="home.html";
+        }
+        
+    })
+    .catch(function(error){
+        console.log("An error occured", error)
+    })
+}
+
+
+</script>
+</html>
