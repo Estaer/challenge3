@@ -39,29 +39,13 @@
 <div class="card">
     <table>
         <tr>
-          <th>RIDES TAKEN</th>
-          <TH>RIDES GIVEN</TH>
+            <th>RIDES TAKEN</th>
+            <TH>RIDES GIVEN</TH>
         </tr>
-        <tr>
-          <td>    <p>Eric</p> 
-          <p>Kololo-12/06/2018-10:00pm</p></td>
-          <td> <p>Jackie </p>
-        <p>Ntinda-12/06/2018-10:00pm</p></td>
-        </tr>
-        <tr>
-            <td> <p>Hazel</p>
-          <p>City Square-14/06/2018-10:00am</p></td>
-            <td><p>Ritah</p>
-            <p>Nakawa-12/06/2018-1:00pm</p></td>
-          </tr>
-          <tr>
-              <td> <p>Felix</p>
-              <p>Kyaddondo rd-12/06/2018-1:00pm</p>
-             </td>
-              <td><p>Esther</p>
-          <p>Jinja-12/06/2018-1:00pm</p></td>
-            </tr>
-            
+
+      <tbody id="tbody">
+          
+      </tbody>    
       </table>
       
      
@@ -81,4 +65,21 @@
   </div>
 <footer class="ridedescription"> &copy; Ride My Way | Essa 2018</footer>
 </body>
+<script>
+  displaytable();
+function displaytable(){
+  var output = document.getElementById("tbody");
+  output.innerHTML = '<tr>'+
+                      '<td>'+    
+                        '<p>Eric</p>' +
+                        '<p>Kololo-12/06/2018-10:00pm</p>' +
+                      '</td>' +
+                      '<td>'+
+                      '<p>Jackie </p>'+
+                      '<p>Ntinda-12/06/2018-10:00pm</p>'+
+                      '</td>'+
+                    '</tr>';
+ 
+}
+</script>
 </html>

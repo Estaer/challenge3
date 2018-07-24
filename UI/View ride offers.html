@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -18,7 +18,7 @@
                         <a class="nav-link" href="driver.html">Offer ride</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="View ride offers.html">Request ride</a>
+                        <a class="nav-link" href="View ride offers.html">Ride Offers</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link" href="View requests.html">View Requests</a>
@@ -38,72 +38,168 @@
           <div class="row2">
             <div class="tab">
               <h2 class="section-heading ridedescription ">Need a ride? Check out the available ride offers and make your request</h2>
-              
-              
-              <table class="Tride">
+              <div id="trides"><table class="Tride">
                     <tr>
-                        <th>Driver</th>
+                        <th>RideId</th>
+                        <th>UserId</th>
                         <th>Meeting Point</th>
                         <th>Destination</th>
                         <th>Departure time</th>
                         <th>Slots</th>                      
                         <th>Action</th>
                     </tr>
-                    <tr>
-                        <td>Esther</td>
-                        <td>Makerere</td>
-                        <td>Buziga</td>
-                        <td>12/06/18-9:00am</td>
-                        <td>2</td>
-                        <td>
-                          <button class="approve">Request</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jack</td>
-                        <td>City Square</td>
-                        <td>Mukono</td>
-                        <td>12/06/18-5:00am</td>
-                        <td>0</td>
-                        <td>
-                          <button  class="approve">Request</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Raymond</td>
-                        <td>Nakawa</td>
-                        <td>Jinja</td>
-                        <td>12/06/18-6:00am</td>
-                        <td>3</td>
-                        <td>
-                          <button  class="approve">Request</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Hosea</td>
-                        <td>Kiwatule</td>
-                        <td>Najera</td>
-                        <td>12/06/18-8:00pm</td>
-                        <td>3</td>
-                        <td>
-                          <button  class="approve">Request</button>
-                        </td>
-                    </tr>
+                    <tbody id ='tbody'>
 
-                    <tr>
-                        <td>Sheba</td>
-                        <td>Kololo</td>
-                        <td>Buziga</td>
-                        <td>12/06/18-6:00pm</td>
-                        <td>1</td>
-                        <td>
-                          <button  class="approve">Request</button>
-                        </td>
-                    </tr>
-                   
-                </table>
+                    </tbody>                  
+                </table></div>
+              <div id="trequest">
+                  <!-- requests table -->
+              </div>
             </div>
           </div>
         </div>
       </section></body>
+<script type="text/javascript" src="cookies.js"></script>
+<script>
+//view all ride offers
+viewrides();
+function viewrides(){
+  
+    fetch("http://127.0.0.1:5000/rides",{
+        method:"GET"
+    })
+    .then(function(response){
+        return response.json()
+    })
+    .then(function(data){
+      console.log(data)
+      var ride_offers = data.ride_offers;
+      var all_rides = '';
+      for(var i=0;i<ride_offers.length;i++){
+        var ride = ride_offers[i];
+        var output = '<tr>'+
+                     '<td>'+ride["ride_id"]+'</td>'+
+                     '<td>'+ride["user_id"]+'</td>'+
+                     '<td>'+ride["meetingpoint"]+'</td>'+
+                     '<td>'+ride["departure"]+'</td>'+
+                     '<td>'+ride["destination"]+'</td>'+
+                     '<td>'+ride["slots"]+'</td>'+
+                     '<td><button onclick="make_request('+ride["ride_id"]+')">Request</button></td>'+
+                     '<td><button onclick="view_requests('+ride["ride_id"]+')">View Requests</button></td>'+
+                     '</tr>';
+        all_rides += output;
+      }      
+      document.getElementById('tbody').innerHTML = all_rides;
+      
+    })
+    .catch(function(error){
+        console.log("An error occured", error)
+    })
+}
+
+//making a request
+
+
+function make_request(ride_id){
+  fetch("http://127.0.0.1:5000/rides/"+ride_id+"/requests",{
+        method:"POST",
+        headers:{'Content-Type':'application/json',
+        'Authorization': 'Bearer ' + readCookie('token')
+      }
+    })
+
+  .then(function(response){
+    return response.json()
+  })
+  .then(function(data){
+    console.log(data)
+    if(data.message=="Request successfully sent"){
+        alert(data.message);
+        window.location.href ="View requests.html";
+        }
+        else{
+            alert(data.message);
+        }
+     
+  })
+  .catch(function(error){
+        console.log("An error occured", error)
+
+    })
+}
+
+//view request to specific ride offer
+function view_requests(ride_id){
+  
+  fetch("http://127.0.0.1:5000/users/rides/"+ride_id+"/requests",{
+      method:"GET"
+  })
+  .then(function(response){
+      return response.json()
+  })
+  .then(function(data){
+    console.log(data)
+    var requests = data.requests;
+    var all_requests = '<table class="Tride">'+
+                      '<tr>' +
+                          '<th>Request ID</th>' +
+                          '<th>Name</th>' +
+                          '<th>Status</th>' +
+                          '<th>Action</th>' +
+                      '</tr>';
+    for(var i=0;i<requests.length;i++){
+      var request = requests[i];
+      var output = '<tr>'+
+                   '<td>'+request["request_id"]+'</td>'+
+                   '<td>'+request["name"]+'</td>'+
+                   '<td>'+request["status"]+'</td>'+
+                   '<td><button onclick="accept_reject('+request["ride_id"]+','+request["request_id"]+',\'accepted\')">Accept</button></td>'+
+                   '<td><button onclick="accept_reject('+request["ride_id"]+','+request["request_id"]+',\'rejected\')">Reject</button></td>'+
+                   '</tr>';
+      all_requests += output;
+    }      
+      all_requests += '</table>';
+    document.getElementById('trequest').innerHTML = all_requests;
+    
+  })
+  .catch(function(error){
+      console.log("An error occured", error)
+  })
+}
+
+//change accept/rejected request
+
+    function accept_reject(ride_id,request_id,status){
+  fetch("http://127.0.0.1:5000/users/rides/"+ride_id+"/requests/"+request_id,{
+        method:"PUT",
+        headers:{'Content-Type':'application/json',
+        'Authorization': 'Bearer ' + readCookie('token')
+      },
+      body:JSON.stringify({
+                    'status':status
+            })
+
+    })
+
+  .then(function(response){
+    return response.json()
+  })
+  .then(function(data){
+    console.log(data)
+    view_requests(ride_id)
+    if(data.status=="accepted" && data.message=="Status updated successfully"){
+        alert(data.message);
+        }
+        else{
+            alert(data.message);
+        }
+     
+  })
+  .catch(function(error){
+        console.log("An error occured", error)
+
+    })
+}
+
+</script>
 </html>

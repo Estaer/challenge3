@@ -39,13 +39,13 @@
           <div class="row2">
             <div class="tab">
               <h2 class="section-heading ridedescription">Have a ride to offer?  Please fill this form.</h2><br>
-                    <form class="addoffer" id="formlogin" method="get" action="View requests.html">
+                    <form class="addoffer" id="addoffer" method="get" action="#">
 
                             <p>    
                                 <label >Meeting point</label>
                             </p>
                     
-                        <input  type="text" name="mpoint" id="mpoint" placeholder="eg. Ntinda" required/>
+                        <input  type="text" name="meetingpoint" id="meetingpoint" placeholder="eg. Ntinda" required/>
                     
     
                     <p>
@@ -53,7 +53,7 @@
                     </p>
     
                 
-                       <input  type="text" name="mpoint" id="mpoint" placeholder="eg.12/06/18-9:00am" required/>
+                       <input  type="text" name="departure" id="departure" placeholder="eg.yy-mm-dd hh:mm" required/>
                     
                     
                     <p>              
@@ -61,20 +61,20 @@
                     </p>
     
                     
-                        <input type="text" name="mpoint" id="mpoint" placeholder="eg. Bukoto" required/>
+                        <input type="text" name="destination" id="destination" placeholder="eg. Bukoto" required/>
                     
     
                     <p>
-                        <label ><label for="">Slots</label></label>
+                        <label ><label>Slots</label></label>
                     </p>
     
                     
-                        <input  type="text" name="mpoint" id="mpoint" placeholder="eg. 2" required/>
+                        <input  type="text" name="slots" id="slots" placeholder="eg. 2" required/>
                     
     
                     
                     <p>
-                        <input type="submit" id="login" value = "Add Offer" class="ridedescription" required/>
+                        <input type="submit" id="addOffer" value = "Add Offer" class="ridedescription" required/>
                      </p>
                         
                 </form>       
@@ -83,4 +83,46 @@
         </div>
     </section>
 </body>
+<script type="text/javascript" src="cookies.js"></script>
+<script>
+    addoffer = document.getElementById("addoffer")
+    
+    if(addoffer.addEventListener){
+      addoffer.addEventListener("submit",addOffer, false);  
+    }
+
+function addOffer(e){
+    e.preventDefault();
+
+    fetch("http://127.0.0.1:5000/users/rides",{
+        method:"POST",
+        headers:{'Content-Type':'application/json',
+                 'Authorization': 'Bearer ' + readCookie('token')
+                },
+        body:JSON.stringify({
+                'meetingpoint':document.getElementById("meetingpoint").value,
+                'departure':document.getElementById("departure").value,
+                'destination':document.getElementById("destination").value,
+                'slots':document.getElementById("slots").value
+        })
+    
+
+    })
+    .then(function(response){
+        return response.json()
+    })
+    .then(function(data){
+        console.log(data)
+        if(data.message=="Ride offer created"){
+
+            window.location.href ="View ride offers.html";
+        }    
+    })
+    .catch(function(error){
+        console.log("An error occured", error)
+    })
+}
+
+
+</script>
 </html>

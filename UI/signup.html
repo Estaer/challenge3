@@ -14,7 +14,7 @@
 
  <div class="loginform"> 
      <h2 class="ridedescription">Signup</h2>
-     <form id="form_login" action="#">
+     <form id="signupform" action="#">
                 <p class="ridedescription" class="ridedescription">First Name</p>
                 <p>
                     <input class="ridedescription" type="text" id="fname" placeholder="firstname" required/>
@@ -44,11 +44,12 @@
             </form>
 </div>
 </body>
+<script type="text/javascript" src="cookies.js"></script>
 <script>
-    form_login = document.getElementById("form_login")
+    signupform = document.getElementById("signupform")
     
-    if(form_login.addEventListener){
-        form_login.addEventListener("submit", signup, false);  
+    if(signupform.addEventListener){
+        signupform.addEventListener("submit", signup, false);  
     }
 
 function signup(e){
@@ -72,7 +73,11 @@ function signup(e){
     .then(function(data){
         console.log(data)
         if(data.message=="User registered"){
+            createCookie("token", data.access_token, 1);
             window.location.href ="home.html";
+        }
+        else{
+            alert(data.message);
         }
         
     })

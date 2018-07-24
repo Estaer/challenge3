@@ -10,3 +10,4 @@ coverage-badge==0.2.0
 gunicorn==19.8.1
 psycopg2==2.7.5
 Flask-JWT-Extended==3.10.0
+Flask-Cors==3.0.6

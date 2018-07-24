@@ -12,7 +12,7 @@ class Ride(Resource):
     """class for a Ride resource"""
     def get(self):
         """ method to fetch all ride offers """
-        return {"Available ride offers":rides_object.get_rides()}, 200
+        return {"ride_offers":rides_object.get_rides()}, 200
 
     @jwt_required
     def post(self):
@@ -106,7 +106,7 @@ class MakeRequest(Resource):
         if rides_object.get_requests(ride_id):
             requests = rides_object.get_requests(ride_id)
             return {"message":"Available requests",
-                    "Requests": requests
+                    "requests": requests
                    }, 200
         else:
             return {"message":"No results found"}, 404

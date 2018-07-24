@@ -22,7 +22,7 @@ class RideModel:
                     "meetingpoint": row[2].strip(),
                     "departure" : row[3].strftime("%Y-%m-%d %H:%M"),
                     "destination" : row[4].strip(),
-                    "slot" : row[5]
+                    "slots" : row[5]
             }
             ride_rows.append(ride)
         return ride_rows
@@ -40,7 +40,7 @@ class RideModel:
                     "meetingpoint" : row[2].strip(),
                     "departure" : row[3].strftime("%Y-%m-%d %H:%M"),
                     "destination" : row[4].strip(),
-                    "slot" : row[5]
+                    "slots" : row[5]
                    }
             return ride
         else:
@@ -150,7 +150,9 @@ class RideModel:
         request_rows = []
         for row in rows:
             request = {
+                    
                     "request_id" : row[0],
+                    "ride_id": row[1],
                     "name" : RideModel.check_username(row[2]).strip(),
                     "status" : row[3].strip()
             }

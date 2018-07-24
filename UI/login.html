@@ -32,6 +32,8 @@
             </form>
 </div>
 </body>
+
+<script type="text/javascript" src="cookies.js"></script>
 <script>
         formlogin = document.getElementById("formlogin")
         
@@ -57,8 +59,13 @@
         })
         .then(function(data){
             console.log(data)
+
             if(data.message=="Successfully logged in"){
-                window.location.href ="driver.html";
+                createCookie("token", data.access_token, 1);
+                window.location.href ="driver.html";  
+            }
+            else{
+                alert(data.message);
             }
             
         })
@@ -66,7 +73,6 @@
             console.log("An error occured", error)
         })
     }
-    
-    
+
     </script>
 </html>
