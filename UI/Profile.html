@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ride My Way</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="new.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+     <header>
+        <nav class="navigation" id="mainNav">
+            <div class="container">
+              <a class="navbar-brand ridedescription" href="index.html">RIDE MY WAY</a>
+              <div class="lists" id="navbarResponsive">
+                <ul class="navbar-nav ridedescription">
+                  <li class="nav-item">
+                    <a class="nav-link" href="driver.html">Offer ride</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="View ride offers.html">Request ride</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="View requests.html">My Rides</a>
+                  </li>
+                  <li class="nav-item logout">
+                      <a class="nav-link" href="login.html" >LOGOUT</a>
+                    </li>
+                  <li class="nav-item logout">
+                        <a class="nav-link" href="profile.html" >Profile</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav> 
+     </header>
+     <div class="row2">
+<div class="card">
+    <table class="Tride">
+        <tr>
+            <th>RIDES TAKEN</th>
+            <TH>RIDES GIVEN</TH>
+        </tr>
+      <tr>
+          <td id="rgiven"></td>
+          <td id="rtaken"></td>
+      </tr>    
+      </table>
+      
+     
+  </div>
+</div>
+</div>
+<footer class="ridedescription"> &copy; Ride My Way | Essa 2018</footer>
+</body>
+<script type="text/javascript" src="cookies.js"></script>
+<script>
+
+//view all ride requests specific to a user
+display_requests()
+  function display_requests(){
+  fetch("http://127.0.0.1:5000/currentuser/requests",{
+        method:"GET",
+        headers:{'Content-Type':'application/json',
+        'Authorization': 'Bearer ' + readCookie('token')
+      }
+    })
+
+  .then(function(response){
+    return response.json()
+  })
+  .then(function(data){
+    console.log(data)
+    if(data.message=="No requests available"){
+    document.getElementById("rtaken").innerHTML = 0;
+      return;
+    }
+    var requests = data.requests;
+    var output = requests.length ;
+    document.getElementById("rtaken").innerHTML = output;
+  })
+  .catch(function(error){
+        console.log("An error occured", error)
+
+    })
+}
+
+//view all ride offers specific to a user
+
+countmyrides();
+function countmyrides(){
+  
+fetch("http://127.0.0.1:5000/currentuser/rides",{
+        method:"GET",
+      headers:{'Content-Type':'application/json',
+        'Authorization': 'Bearer ' + readCookie('token')
+      }
+  })
+  .then(function(response){
+      return response.json()
+  })
+.then(function(data){
+    console.log(data)
+    if(data.message=="No ride offers available"){
+    document.getElementById("rgiven").innerHTML = 0;
+      return;
+    }
+    var ride_offers = data.ride_offers;
+    var output = ride_offers.length;
+    document.getElementById("rgiven").innerHTML = output;
+  })
+  .catch(function(error){
+      console.log("An error occured", error)
+  })
+}
+
+</script>
+</html>

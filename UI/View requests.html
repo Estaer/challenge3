@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ride My Way</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="new.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+        <nav class="navigation" id="mainNav">
+                <div class="container">
+                  <a class="navbar-brand ridedescription" href="index.html">RIDE MY WAY</a>
+                  <div class="lists" id="navbarResponsive">
+                    <ul class="navbar-nav ridedescription">
+                      <li class="nav-item">
+                        <a class="nav-link" href="driver.html">Offer ride</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="View ride offers.html">Request ride</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="View requests.html">My Rides</a>
+                      </li>
+                      <li class="nav-item logout">
+                          <a class="nav-link" href="login.html" >LOGOUT</a>
+                        </li>
+                      <li class="nav-item logout">
+                            <a class="nav-link" href="Profile.html" >Profile</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+    <section class="ride-requests" id="main3">
+        <div class="container">
+          <div class="row2">
+            <div class="tab">
+              <h2 class="ridedescription">Want someone to ride along with? Check out the available ride requests.</h2>
+             <div id="myrides">
+
+              </div>
+              <div id="trequest">
+                  <!-- requests table -->
+                  
+                  <p id="error"></p>
+              </div> 
+              <div id="rerror"></div>                                
+            </div>
+          </div>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src="cookies.js"></script>
+<script>
+//view all ride offers specific to a user
+viewmyrides();
+function viewmyrides(){
+  
+  fetch("http://127.0.0.1:5000/currentuser/rides",{
+      method:"GET",
+      headers:{'Content-Type':'application/json',
+        'Authorization': 'Bearer ' + readCookie('token')
+      }
+  })
+  .then(function(response){
+      return response.json()
+  })
+  .then(function(data){
+    console.log(data)
+    var ride_offers = data.ride_offers;
+    var all_rides = '<table class="Tride" id="ridetable">'+
+                    '<tr>'+
+                        '<th>Ride Id</th>'+
+                        '<th>Meeting Point</th>'+
+                        '<th>Departure time</th>'+
+                        '<th>Destination</th>'+
+                        '<th>Slots</th>'     +                
+                        '<th>Action</th>'+
+                    '</tr>'; 
+    if(data.message=="No ride offers available"){
+        document.getElementById("error").innerHTML = data.message;
+        return;
+    } 
+    for(var i=0;i<ride_offers.length;i++){
+      var ride = ride_offers[i];
+      var output = '<tr>'+
+                   '<td>'+ride["ride_id"]+'</td>'+
+                   '<td>'+ride["meetingpoint"]+'</td>'+
+                   '<td>'+ride["departure"]+'</td>'+
+                   '<td>'+ride["destination"]+'</td>'+
+                   '<td>'+ride["slots"]+'</td>'+
+                   '<td><button onclick="view_requests('+ride["ride_id"]+')">View Requests</button></td>'+
+                   '</tr>';
+      all_rides += output;
+    } 
+    all_rides+='</table>'  ;   
+    document.getElementById('myrides').innerHTML = all_rides;
+    
+  })
+  .catch(function(error){
+      console.log("An error occured", error)
+  })
+}
+
+//view request to specific ride offer
+function view_requests(ride_id){
+  
+  fetch("http://127.0.0.1:5000/users/rides/"+ride_id+"/requests",{
+      method:"GET"
+  })
+  .then(function(response){
+      return response.json()
+  })
+  .then(function(data){
+    console.log(data)
+    var requests = data.requests;
+    var all_requests = '<table class="Tride" id="reqtable">'+
+                      '<tr>' +
+                          '<th>Request ID</th>' +
+                          '<th>Name</th>' +
+                          '<th>Status</th>' +
+                          '<th>Action</th>' +
+                      '</tr>';
+    if(data.message === "No requests found"){
+        document.getElementById("trequest").innerHTML = "";
+        document.getElementById("rerror").innerHTML = data.message;
+        return;
+    }
+    for(var i=0;i<requests.length;i++){
+      var request = requests[i];
+      var output = '<tr>'+
+                   '<td>'+request["request_id"]+'</td>'+
+                   '<td>'+request["name"]+'</td>'+
+                   '<td>'+request["status"]+'</td>'+
+                   '<td><button onclick="accept_reject('+request["ride_id"]+','+request["request_id"]+',\'accepted\')">Accept</button></td>'+
+                   '<td><button onclick="accept_reject('+request["ride_id"]+','+request["request_id"]+',\'rejected\')">Reject</button></td>'+
+                   '</tr>';
+      all_requests += output;
+    }      
+      all_requests += '</table>';
+    document.getElementById('trequest').innerHTML = all_requests;    
+  })
+  .catch(function(error){
+      console.log("An error occured", error)
+  })
+}
+
+//change accept/rejected request
+
+    function accept_reject(ride_id,request_id,status){
+  fetch("http://127.0.0.1:5000/users/rides/"+ride_id+"/requests/"+request_id,{
+        method:"PUT",
+        headers:{'Content-Type':'application/json',
+        'Authorization': 'Bearer ' + readCookie('token')
+      },
+      body:JSON.stringify({
+                    'status':status
+            })
+
+    })
+
+  .then(function(response){
+    return response.json()
+  })
+  .then(function(data){
+    console.log(data)
+    view_requests(ride_id)
+    if(data.status=="accepted" && data.message=="Status updated successfully"){
+        alert(data.message);
+        }
+        else{
+            alert(data.message);
+        }
+     
+  })
+  .catch(function(error){
+        console.log("An error occured", error)
+
+    })
+}
+</script>
+</html>

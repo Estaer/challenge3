@@ -1,0 +1,361 @@
+*{
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  background-color:#dcdde1;
+  padding:0;
+}
+
+a {
+  color: #392e5e;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #392e5e;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+
+
+.Tride{
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  background-color: #aaa69d !important;
+  float: none;
+  text-align: center;
+  margin-top:40px;
+}
+
+td, th {
+  border: 1px solid #bd9797;
+  text-align: center;
+  padding: 8px;
+}
+table.offer td{
+  border: 0px;
+}
+
+tr:nth-child(even) {
+    background-color:#f7f1e3;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding-left: 50px;
+  overflow: hidden;
+  background: transparent;
+}
+
+li {
+  float: left;
+
+}
+
+li a{
+  display: block;
+  text-shadow: 2px 2px 8px #111;
+  color: #fff;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-weight: 40px;
+  font-size: 20px;
+}
+
+.logout{
+float: right;
+
+}
+.getstarted{
+  border: 1px;
+  border-radius: 20px;
+  width: 200px;
+  height: 60px;
+  line-height: 600px;
+  background-color:gainsboro;
+}
+
+.description{
+  width: 100%;
+  height:100vh;
+  background-image: url('images/red.jpg');
+  background-position: center;
+  background-size:cover;
+  background-repeat: no-repeat;
+  
+}
+
+.ridetitle{
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 80px;
+  font-weight: 900;
+  line-height: 90px;
+  text-shadow: 2px 2px 8px #111;
+  color: #fff;
+}
+.ridedescription{
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  font-style: italic;
+  line-height: 40px;
+  text-shadow: 2px 2px 8px #111;
+  color: #fff;
+}
+.row1{
+  
+  display:table-cell;
+  vertical-align: middle;
+  text-align: center;
+  overflow: auto;
+  padding-left: 300px;
+}
+.row2{
+  height: 540px;
+  background-color:#f5f6fa;
+  box-shadow: 10px 10px 5px #aaa69d;
+  display: block;
+  padding-left:100px;
+  padding-top:80px;
+  width: 80%;
+  object-fit: cover;
+  margin:auto;
+
+  
+}
+label{
+  text-align: left;
+  font-weight: bold;
+   
+}
+.offer-btn{
+  vertical-align: middle;
+  margin: auto;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 10px;
+  width:200px;
+  margin-right:65px;
+  font-size: 20px;
+  text-shadow: 2px 2px 8px #111;
+  color: #fff;
+  float:right;
+}
+
+
+.header{
+  background-color:#f7f1e3;
+  box-shadow: 10px 10px 5px #aaa69d;
+}
+  
+
+
+.tab, table.Tride{
+  vertical-align: middle;
+  width: 90%;
+  box-sizing: border-box;
+  text-align: center;
+
+}
+
+.navbar-brand{
+    
+  text-align: center;
+}
+footer{
+  text-align: center;
+  padding-top: 35%; 
+  font-size: 20px !important;
+}
+
+.row2 input{
+ 
+  line-height: 20px;
+  width:80%;
+  text-align: center;
+  
+}
+
+/* .floatbtn{
+
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  padding: 5px;
+  z-index: 2;
+  border-radius: 10px;
+  background-color:rgb(214, 160, 150);
+} */
+table{
+  margin: auto;
+  text-align:center;
+  box-shadow: 10px 10px 5px #aaa69d;
+  
+}
+.approve{
+  width: 100px;
+  height: 30px;
+  border-radius: 10px;
+
+
+}
+/***..............login and signup styles..........***/
+.loginform {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 420;
+  padding: 80px 40px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.loginform p{
+  margin: 0;
+  padding:0;
+  font-weight: bold;
+  font-size:20px;
+  
+}
+
+.loginform input{
+ width:100%;
+ margin-bottom: 20px;
+}
+
+.loginform input[ type="text"], .loginform input[type="password"]{
+  border: none;
+ border-bottom: 1px solid rgb(197, 184, 184);
+background: transparent;
+outline: none;
+height:40px;
+color: antiquewhite;
+font-size: 16px;
+}
+
+.loginform input[type="submit"]{
+  border: none;
+  outline: none;
+  height:40px;
+  font-size: 16px;
+  color: black;
+  cursor: pointer;
+  border-radius: 15px; 
+
+}
+h2{
+  margin: 0;
+  padding:0,0,20px;
+  text-align: center;
+  color: #111 !important;
+}
+
+
+.bckimg{ 
+  margin: 0;
+  padding: 0;
+  background-image: url('images/red.jpg');
+  background-size: cover; 
+  height:calc(100vh-100px);
+  
+}
+/***.......profile......***/
+.pcontainer{
+  background-image: url('Ride-My-Way/UI/images/face.png'); 
+  background-repeat: no-repeat;
+}
+.pcontainerp{
+  padding-top: 250px;
+}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 400px;
+  text-align: left;
+  line-height: 10px;
+  text-indent: 50px;
+  padding-top: 100px;
+  margin-top: 25px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/***..............add offer form styles..........***/
+.addoffer {
+  margin-top:100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 290px;
+  height:410px;
+  padding: 40px 40px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.addoffer p{
+  margin: 0;
+  padding:0;
+  font-weight: bold;
+  font-size:20px !important;
+  
+}
+
+.addoffer input{
+ width:100%;
+ margin-bottom: 15px;
+}
+
+.addoffer input[ type="text"], .addoffer input[type="password"]{
+  border: none;
+ border-bottom: 1px solid rgb(231, 229, 229);
+background: transparent;
+outline: none;
+height:40px;
+color:#fff;
+font-size: 16px;
+border-radius: 0;
+}
+
+.addoffer input[type="submit"]{
+  border: none;
+  outline: none;
+  height:40px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 15px; 
+  background-color: gray;
+
+}
+.addoffer h2{
+  margin: 0;
+  padding:0,0,20px;
+  text-align: center;
+  color: #111 !important;
+}
+
+/*......offer ........*/
