@@ -3,4 +3,6 @@
 !.vscode/settings.json
 htmlcov
 .pytest_cache/v/cache
-.idea
+.idea/*
+.pytest_cache/*
+
