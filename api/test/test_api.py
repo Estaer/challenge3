@@ -134,6 +134,16 @@ class TestClass(unittest.TestCase):
             content_type='application/json')
         register_data = json.loads(register_response.data.decode())
         access_token = register_data["access_token"]
+        # 2nd user
+        register_response2 = self.myapp.post("/auth/signup", data=json.dumps(dict(
+            firstname="me",
+            lastname="you",
+            username="user5",
+            password="hddhsd"
+        )),
+            content_type='application/json')
+        register_data2 = json.loads(register_response2.data.decode())
+        access_token2 = register_data2["access_token"]
 
         post_ride_response = self.myapp.post("/users/rides", headers=dict(Authorization="Bearer " + access_token),
                                              data=json.dumps(dict(
@@ -143,7 +153,7 @@ class TestClass(unittest.TestCase):
                                                  slots=2)),
                                              content_type="application/json",
                                              )
-        request_response = self.myapp.post("/rides/1/requests", headers=dict(Authorization="Bearer " + access_token),
+        request_response = self.myapp.post("/rides/1/requests", headers=dict(Authorization="Bearer " + access_token2),
 
                                           content_type='application/json',
                                           )
@@ -161,6 +171,16 @@ class TestClass(unittest.TestCase):
                                             content_type='application/json')
         register_data = json.loads(register_response.data.decode())
         access_token = register_data["access_token"]
+        # 2nd user
+        register_response2 = self.myapp.post("/auth/signup", data=json.dumps(dict(
+            firstname="me",
+            lastname="you",
+            username="user5",
+            password="hddhsd"
+        )),
+            content_type='application/json')
+        register_data2 = json.loads(register_response2.data.decode())
+        access_token2 = register_data2["access_token"]
 
         post_ride_response = self.myapp.post("/users/rides", headers=dict(Authorization="Bearer " + access_token),
                                              data=json.dumps(dict(
@@ -170,7 +190,7 @@ class TestClass(unittest.TestCase):
                                                  slots=2)),
                                              content_type="application/json",
                                              )
-        request_response = self.myapp.post("/rides/1/requests", headers=dict(Authorization="Bearer " + access_token),
+        request_response = self.myapp.post("/rides/1/requests", headers=dict(Authorization="Bearer " + access_token2),
 
                                            content_type='application/json',
                                            )
@@ -191,6 +211,16 @@ class TestClass(unittest.TestCase):
                                             content_type='application/json')
         register_data = json.loads(register_response.data.decode())
         access_token = register_data["access_token"]
+        # 2nd user
+        register_response2 = self.myapp.post("/auth/signup", data=json.dumps(dict(
+            firstname="me",
+            lastname="you",
+            username="user5",
+            password="hddhsd"
+        )),
+            content_type='application/json')
+        register_data2 = json.loads(register_response2.data.decode())
+        access_token2 = register_data2["access_token"]
 
         post_ride_response = self.myapp.post("/users/rides", headers=dict(Authorization="Bearer " + access_token),
                                              data=json.dumps(dict(
@@ -200,7 +230,7 @@ class TestClass(unittest.TestCase):
                                                  slots=2)),
                                              content_type="application/json",
                                              )
-        request_response = self.myapp.post("/rides/1/requests", headers=dict(Authorization="Bearer " + access_token),
+        request_response = self.myapp.post("/rides/1/requests", headers=dict(Authorization="Bearer " + access_token2),
 
                                            content_type='application/json',
                                            )
