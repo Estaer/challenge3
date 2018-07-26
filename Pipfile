@@ -4,13 +4,19 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+colorama = "==0.3.9"
 coverage = "==4.5.1"
+flask = "==1.0.2"
+flask-jwt = "==0.3.2"
+flask-restful = "==0.3.6"
+pyjwt = "==1.4.2"
 pylint = "==1.9.2"
 pytest = "==3.6.1"
-coveralls = "*"
+coverage-badge = "==0.2.0"
 gunicorn = "==19.8.1"
-Flask = "==1.0.2"
-Flask-RESTful = "==0.3.6"
+"psycopg2" = "==2.7.5"
+flask-jwt-extended = "==3.10.0"
+Flask-Cors = "==3.0.6"
 
 [dev-packages]
 
