@@ -12,7 +12,7 @@ class Ride(Resource):
     """class for a Ride resource"""
     def get(self):
         """ method to fetch all ride offers """
-        return {"Available ride offers":rides_object.get_rides()}, 200
+        return {"ride_offers":rides_object.get_rides()}, 200
 
     @jwt_required
     def post(self):
@@ -37,11 +37,38 @@ class RideOffer(Resource):
 
 
     def get(self, ride_id):
-        """returns a ride offer for a specific offer id"""
+        """returns a ride offer for a specific ride id"""
         if rides_object.get_single_ride(ride_id):
             return {"Ride":rides_object.get_single_ride(ride_id)}, 200
         else:
             return {"message" : "Ride offer doesnot exist"}, 404
+
+class MyRideOffers(Resource):
+    """class for a MyRideOffers resource"""
+
+    @jwt_required
+    def get(self):
+        """ method to fetch all ride offers specific to user """
+        user_id = get_jwt_identity()
+        if rides_object.get_my_rides(user_id):
+            return {"ride_offers":rides_object.get_my_rides(user_id)}, 200
+        else:
+            return {"message" : "No ride offers available"}, 404
+        
+
+
+class MyRequests(Resource):
+    """class for a MyRequests resource"""
+
+    @jwt_required
+    def get(self):
+        """ method to fetch all requests specific to user """
+        user_id = get_jwt_identity()
+        if rides_object.get_my_rides(user_id):
+            return {"requests":rides_object.get_my_requests(user_id)}, 200
+        else:
+            return {"message" : "No requests available"}, 404
+        
 
 
 class Register(Resource):
@@ -96,20 +123,24 @@ class MakeRequest(Resource):
         """ method to make a request for a ride """
         user_id = get_jwt_identity()
         if rides_object.check_for_ride(ride_id):
-            rides_object.make_request(ride_id, user_id)
-            return rides_object.make_request(ride_id, user_id), 201
+            
+            if rides_object.make_request(ride_id, user_id):
+                return {"message":"Request successfully sent"}, 201
+            else:
+               
+                return {"message":"You cannot make a request to a ride that you offered."} , 400
         else:
-            return {"Message" : "Ride offer does not exist"}, 404
+            return {"message" : "Ride offer does not exist"}, 404
 
     def get(self, ride_id):
         """ method to fetch requests to a specific ride"""
         if rides_object.get_requests(ride_id):
             requests = rides_object.get_requests(ride_id)
             return {"message":"Available requests",
-                    "Requests": requests
+                    "requests": requests
                    }, 200
         else:
-            return {"message":"No results found"}, 404
+            return {"message":"No requests found"}, 404
 
     @jwt_required
     def put(self, ride_id, request_id):

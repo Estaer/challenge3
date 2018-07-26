@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ride My Way</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="new.css" />
+    <script src="main.js"></script>
+</head>
+<body class="bckimg">
+
+ <div class="loginform"> 
+     <h2 class="ridedescription">Login Here</h2>
+     <form id="formlogin" method="get" action="#" >
+                        <p class="ridedescription">Username</p>
+                <p class="ridedescription">
+                    <input class="ridedescription" type="text" id="uname" placeholder="username" required/>
+                </p>
+                <p class="ridedescription">Password</p>
+                <p>
+                    <input class="ridedescription"  type="password" id="pass" placeholder="password" required/>
+                </p>
+                <p>
+                    <input type="submit" id="login" class="ridedescription" value="Login" class="ridedescription" />
+                 </p>
+                 
+                <p class="ridedescription">
+                    No account?</p>
+                    <p> <a href="signup.html" class="ridedescription" >SIGNUP HERE</a>
+                </p>
+            </form>
+</div>
+</body>
+
+<script type="text/javascript" src="cookies.js"></script>
+<script>
+        formlogin = document.getElementById("formlogin")
+        
+        if(formlogin.addEventListener){
+            formlogin.addEventListener("submit", login, false);  
+        }
+    
+    function login(e){
+        e.preventDefault();
+    
+        fetch("http://127.0.0.1:5000/auth/login",{
+            method:"POST",
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                    'username':document.getElementById("uname").value,
+                    'password':document.getElementById("pass").value
+            })
+        
+    
+        })
+        .then(function(response){
+            return response.json()
+        })
+        .then(function(data){
+            console.log(data)
+
+            if(data.message=="Successfully logged in"){
+                createCookie("token", data.access_token, 1);
+                window.location.href ="driver.html";  
+            }
+            else{
+                alert(data.message);
+            }
+            
+        })
+        .catch(function(error){
+            console.log("An error occured", error)
+        })
+    }
+
+    </script>
+</html>
