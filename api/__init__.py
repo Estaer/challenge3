@@ -1,5 +1,7 @@
 from api.views.ridesview import Ride
 from api.views.ridesview import RideOffer
+from api.views.ridesview import MyRideOffers
+from api.views.ridesview import MyRequests
 from api.views.ridesview import Register
 from api.views.ridesview import Login
 from api.views.ridesview import MakeRequest
@@ -29,11 +31,10 @@ def not_found(error):
 
 api.add_resource(Ride, "/rides", "/users/rides")
 api.add_resource(RideOffer, "/rides/<int:ride_id>")
+api.add_resource(MyRideOffers, "/currentuser/rides")
+api.add_resource(MyRequests, "/currentuser/requests")
 api.add_resource(Login, "/auth/login")
 api.add_resource(Register, "/auth/signup")
 api.add_resource(MakeRequest, "/users/rides/<int:ride_id>/requests",
                  "/rides/<int:ride_id>/requests",
                  "/users/rides/<int:ride_id>/requests/<int:request_id>")
-
-
-

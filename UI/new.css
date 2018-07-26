@@ -288,41 +288,18 @@ h2{
   overflow: hidden;
   position: absolute;
   top: 50%;
-  left: 60%;
+  left: 50%;
   transform: translate(-50%, -50%);
   width: 700px;
   height: 400px;
   text-align: left;
   line-height: 10px;
   text-indent: 50px;
-  padding-top: 30px;
+  padding-top: 100px;
   margin-top: 25px;
 }
 
 .card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-
-
-
-.card2 {
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  box-sizing: border-box;
-  overflow: hidden;
-  margin-top: 25px;
-  position: absolute;
-  top: 50%;
-  left: 25%;
-  /* float: left !important; */
-  transform: translate(-50%, -50%);
-  width: 250px;
-  height: 400px;
-  text-align: center;
-  line-height: 10px;
-}
-
-.card2:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 

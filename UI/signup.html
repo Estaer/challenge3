@@ -74,7 +74,7 @@ function signup(e){
         console.log(data)
         if(data.message=="User registered"){
             createCookie("token", data.access_token, 1);
-            window.location.href ="home.html";
+            window.location.href ="index.html";
         }
         else{
             alert(data.message);

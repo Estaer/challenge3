@@ -1,6 +1,7 @@
 from api.database.db import Connection
 
 import psycopg2
+import datetime
 from flask_jwt_extended import create_access_token
 from flask_restful import request
 
@@ -26,6 +27,42 @@ class RideModel:
             }
             ride_rows.append(ride)
         return ride_rows
+
+    def get_my_rides(self, user_id):
+        """method to return all ride offers specific to user"""
+        connection = Connection()
+        cursor = connection.cursor
+        cursor.execute("SELECT * from rides where user_id = %s ",(user_id, ))
+        rows = cursor.fetchall()
+        ride_rows = []
+        for row in rows:
+            ride = {
+                    "ride_id" : row[0],
+                    "meetingpoint": row[2].strip(),
+                    "departure" : row[3].strftime("%Y-%m-%d %H:%M"),
+                    "destination" : row[4].strip(),
+                    "slots" : row[5]
+            }
+            ride_rows.append(ride)
+        return ride_rows
+    
+    def get_my_requests(self, user_id):
+        """method to return all requests specific to user"""
+        connection = Connection()
+        cursor = connection.cursor
+        cursor.execute("SELECT * from requests where user_id = %s ",(user_id, ))
+        rows = cursor.fetchall()
+        request_rows = []
+        for row in rows:
+            ride = {
+                    "request_id" : row[0],
+                    "ride_id": row[1],
+                    "status" : row[3].strip()
+                    
+            }
+            request_rows.append(ride)
+        return request_rows
+
 
     def get_single_ride(self, ride_id):
         """ method to return a single ride offer """
@@ -90,7 +127,8 @@ class RideModel:
         cursor.execute(sql, (data["username"], ))
         row = cursor.fetchone()
         if row:
-            access_token = create_access_token(identity=row[0])
+            expire = datetime.timedelta(days=1)
+            access_token = create_access_token(identity=row[0],expires_delta=expire)
             return access_token
         else:
             return False
@@ -104,7 +142,8 @@ class RideModel:
         cursor.execute(query,(data["username"], data["password"]))
         row = cursor.fetchone()
         if row:
-            access_token = create_access_token(identity=row[0])
+            expire = datetime.timedelta(days=1)
+            access_token = create_access_token(identity=row[0],expires_delta=expire)
             return access_token 
         else:
             return False
@@ -121,14 +160,31 @@ class RideModel:
         else:
             return False
 
+    def check_user_ride(self, ride_id, user_id):
+        """method to check for a ride and corresponding user"""
+        connection = Connection()
+        cursor = connection.cursor
+        query =  "SELECT * FROM rides WHERE ride_id = %s AND user_id = %s"
+        cursor.execute(query, (ride_id,user_id))
+        row = cursor.fetchall()
+        if row:
+            return True 
+        else:
+            return False
+
+
     def make_request(self, ride_id, user_id):
         """method to request for a ride offer"""
         connection = Connection()
         cursor = connection.cursor
-        query =  """INSERT into requests 
-                    (ride_id, user_id, status) VALUES(%s, %s, %s)"""
-        cursor.execute(query,(ride_id, user_id, "PENDING"))
-        return {"message":"Request successfully sent"}
+
+        if (self.check_user_ride(ride_id,user_id)):
+            return False
+        else:
+            query =  """INSERT into requests 
+                        (ride_id, user_id, status) VALUES(%s, %s, %s)"""
+            cursor.execute(query,(ride_id, user_id, "PENDING"))
+            return True
 
     @staticmethod
     def check_username(ride_id):

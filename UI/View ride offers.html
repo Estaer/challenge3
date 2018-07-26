@@ -11,7 +11,7 @@
 <body>
         <nav class="navigation" id="mainNav">
                 <div class="container">
-                  <a class="navbar-brand ridedescription" href="home.html">RIDE MY WAY</a>
+                  <a class="navbar-brand ridedescription" href="index.html">RIDE MY WAY</a>
                   <div class="lists" id="navbarResponsive">
                     <ul class="navbar-nav ridedescription">
                       <li class="nav-item">
@@ -21,7 +21,7 @@
                         <a class="nav-link" href="View ride offers.html">Ride Offers</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="View requests.html">View Requests</a>
+                        <a class="nav-link" href="View requests.html" onclick="viewmyrides(user_id)">My Rides</a>
                       </li>
                       <li class="nav-item logout">
                           <a class="nav-link" href="login.html" >LOGOUT</a>
@@ -52,9 +52,6 @@
 
                     </tbody>                  
                 </table></div>
-              <div id="trequest">
-                  <!-- requests table -->
-              </div>
             </div>
           </div>
         </div>
@@ -85,7 +82,7 @@ function viewrides(){
                      '<td>'+ride["destination"]+'</td>'+
                      '<td>'+ride["slots"]+'</td>'+
                      '<td><button onclick="make_request('+ride["ride_id"]+')">Request</button></td>'+
-                     '<td><button onclick="view_requests('+ride["ride_id"]+')">View Requests</button></td>'+
+                    //  '<td><button onclick="view_requests('+ride["ride_id"]+')">View Requests</button></td>'+
                      '</tr>';
         all_rides += output;
       }      
@@ -108,87 +105,14 @@ function make_request(ride_id){
       }
     })
 
-  .then(function(response){
+  .then(function(response){ 
     return response.json()
   })
   .then(function(data){
     console.log(data)
-    if(data.message=="Request successfully sent"){
+    if(data.message == "Request successfully sent"){
         alert(data.message);
         window.location.href ="View requests.html";
-        }
-        else{
-            alert(data.message);
-        }
-     
-  })
-  .catch(function(error){
-        console.log("An error occured", error)
-
-    })
-}
-
-//view request to specific ride offer
-function view_requests(ride_id){
-  
-  fetch("http://127.0.0.1:5000/users/rides/"+ride_id+"/requests",{
-      method:"GET"
-  })
-  .then(function(response){
-      return response.json()
-  })
-  .then(function(data){
-    console.log(data)
-    var requests = data.requests;
-    var all_requests = '<table class="Tride">'+
-                      '<tr>' +
-                          '<th>Request ID</th>' +
-                          '<th>Name</th>' +
-                          '<th>Status</th>' +
-                          '<th>Action</th>' +
-                      '</tr>';
-    for(var i=0;i<requests.length;i++){
-      var request = requests[i];
-      var output = '<tr>'+
-                   '<td>'+request["request_id"]+'</td>'+
-                   '<td>'+request["name"]+'</td>'+
-                   '<td>'+request["status"]+'</td>'+
-                   '<td><button onclick="accept_reject('+request["ride_id"]+','+request["request_id"]+',\'accepted\')">Accept</button></td>'+
-                   '<td><button onclick="accept_reject('+request["ride_id"]+','+request["request_id"]+',\'rejected\')">Reject</button></td>'+
-                   '</tr>';
-      all_requests += output;
-    }      
-      all_requests += '</table>';
-    document.getElementById('trequest').innerHTML = all_requests;
-    
-  })
-  .catch(function(error){
-      console.log("An error occured", error)
-  })
-}
-
-//change accept/rejected request
-
-    function accept_reject(ride_id,request_id,status){
-  fetch("http://127.0.0.1:5000/users/rides/"+ride_id+"/requests/"+request_id,{
-        method:"PUT",
-        headers:{'Content-Type':'application/json',
-        'Authorization': 'Bearer ' + readCookie('token')
-      },
-      body:JSON.stringify({
-                    'status':status
-            })
-
-    })
-
-  .then(function(response){
-    return response.json()
-  })
-  .then(function(data){
-    console.log(data)
-    view_requests(ride_id)
-    if(data.status=="accepted" && data.message=="Status updated successfully"){
-        alert(data.message);
         }
         else{
             alert(data.message);
