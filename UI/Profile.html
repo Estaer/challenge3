@@ -6,7 +6,8 @@
     <title>Ride My Way</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="new.css" />
-    <script src="main.js"></script>
+    <script src="js/main.js"></script>
+    <script type="text/javascript" src="js/cookies.js"></script>
 </head>
 <body>
      <header>
@@ -54,66 +55,4 @@
 </div>
 <footer class="ridedescription"> &copy; Ride My Way | Essa 2018</footer>
 </body>
-<script type="text/javascript" src="cookies.js"></script>
-<script>
-
-//view all ride requests specific to a user
-display_requests()
-  function display_requests(){
-  fetch("http://127.0.0.1:5000/currentuser/requests",{
-        method:"GET",
-        headers:{'Content-Type':'application/json',
-        'Authorization': 'Bearer ' + readCookie('token')
-      }
-    })
-
-  .then(function(response){
-    return response.json()
-  })
-  .then(function(data){
-    console.log(data)
-    if(data.message=="No requests available"){
-    document.getElementById("rtaken").innerHTML = 0;
-      return;
-    }
-    var requests = data.requests;
-    var output = requests.length ;
-    document.getElementById("rtaken").innerHTML = output;
-  })
-  .catch(function(error){
-        console.log("An error occured", error)
-
-    })
-}
-
-//view all ride offers specific to a user
-
-countmyrides();
-function countmyrides(){
-  
-fetch("http://127.0.0.1:5000/currentuser/rides",{
-        method:"GET",
-      headers:{'Content-Type':'application/json',
-        'Authorization': 'Bearer ' + readCookie('token')
-      }
-  })
-  .then(function(response){
-      return response.json()
-  })
-.then(function(data){
-    console.log(data)
-    if(data.message=="No ride offers available"){
-    document.getElementById("rgiven").innerHTML = 0;
-      return;
-    }
-    var ride_offers = data.ride_offers;
-    var output = ride_offers.length;
-    document.getElementById("rgiven").innerHTML = output;
-  })
-  .catch(function(error){
-      console.log("An error occured", error)
-  })
-}
-
-</script>
 </html>

@@ -6,7 +6,8 @@
     <title>Ride My Way</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="new.css" />
-    <script src="main.js"></script>
+    <script src="js/main.js"></script>
+    <script type="text/javascript" src="js/cookies.js"></script>
 </head>
 <body>
         <nav class="navigation" id="mainNav">
@@ -83,46 +84,4 @@
         </div>
     </section>
 </body>
-<script type="text/javascript" src="cookies.js"></script>
-<script>
-    addoffer = document.getElementById("addoffer")
-    
-    if(addoffer.addEventListener){
-      addoffer.addEventListener("submit",addOffer, false);  
-    }
-
-function addOffer(e){
-    e.preventDefault();
-
-    fetch("http://127.0.0.1:5000/users/rides",{
-        method:"POST",
-        headers:{'Content-Type':'application/json',
-                 'Authorization': 'Bearer ' + readCookie('token')
-                },
-        body:JSON.stringify({
-                'meetingpoint':document.getElementById("meetingpoint").value,
-                'departure':document.getElementById("departure").value,
-                'destination':document.getElementById("destination").value,
-                'slots':document.getElementById("slots").value
-        })
-    
-
-    })
-    .then(function(response){
-        return response.json()
-    })
-    .then(function(data){
-        console.log(data)
-        if(data.message=="Ride offer created"){
-
-            window.location.href ="View ride offers.html";
-        }    
-    })
-    .catch(function(error){
-        console.log("An error occured", error)
-    })
-}
-
-
-</script>
 </html>

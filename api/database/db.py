@@ -11,8 +11,8 @@ class Connection:
                                                       host="localhost", port="5432")
             else:
                 if current_app.config["TESTING"]:
-                    self.my_connection = psycopg2.connect(database="d4drt4pgjohc34", user="hbatljngbpftfl",
-                                                          password="5b868ad02b6ac8634c3f947fc6e25a292d66055697d6d075874a71ee8e266f1a", host="ec2-54-243-59-122.compute-1.amazonaws.com", port="5432")
+                    self.my_connection = psycopg2.connect(database="testdb", user="postgres",
+                                                          password="postgres", host="localhost", port="5432")
                 else:
                     self.my_connection = psycopg2.connect(database="dfj524uvdi7ui7", user="xqjtwioxwfdfuo",
                                                           password="7398d44b7d43991c6f1256afbf56857c5e8e26d5e27a40264ec7d8ed297cb640", host="ec2-54-83-11-247.compute-1.amazonaws.com", port="5432")
