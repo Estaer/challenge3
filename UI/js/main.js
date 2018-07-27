@@ -96,7 +96,7 @@ fetch("https://my-ride-app.herokuapp.com/currentuser/rides",{
         })
     }
     // adding an offer
-    addoffer = document.getElementById("addoffer")
+    addoffer = document.getElementById("btn_addOffer")
     
     if(addoffer.addEventListener){
       addoffer.addEventListener("submit",addOffer, false);  
