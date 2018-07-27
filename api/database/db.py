@@ -7,8 +7,9 @@ class Connection:
         """ initialize the connection object """
         try:
             if db:
-                self.my_connection = psycopg2.connect(database=db, user="postgres", password="postgres",
-                                                      host="localhost", port="5432")
+                self.my_connection = psycopg2.connect(database=db, user="xqjtwioxwfdfuo",
+                                                          password="7398d44b7d43991c6f1256afbf56857c5e8e26d5e27a40264ec7d8ed297cb640", host="ec2-54-83-11-247.compute-1.amazonaws.com", port="5432")
+
             else:
                 if current_app.config["TESTING"]:
                     self.my_connection = psycopg2.connect(database="testdb", user="postgres",
