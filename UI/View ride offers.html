@@ -6,7 +6,8 @@
     <title>Ride My Way</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="new.css" />
-    <script src="main.js"></script>
+    <script src="js/main.js"></script>
+    <script type="text/javascript" src="js/cookies.js"></script>
 </head>
 <body>
         <nav class="navigation" id="mainNav">
@@ -56,74 +57,4 @@
           </div>
         </div>
       </section></body>
-<script type="text/javascript" src="cookies.js"></script>
-<script>
-//view all ride offers
-viewrides();
-function viewrides(){
-  
-    fetch("http://127.0.0.1:5000/rides",{
-        method:"GET"
-    })
-    .then(function(response){
-        return response.json()
-    })
-    .then(function(data){
-      console.log(data)
-      var ride_offers = data.ride_offers;
-      var all_rides = '';
-      for(var i=0;i<ride_offers.length;i++){
-        var ride = ride_offers[i];
-        var output = '<tr>'+
-                     '<td>'+ride["ride_id"]+'</td>'+
-                     '<td>'+ride["user_id"]+'</td>'+
-                     '<td>'+ride["meetingpoint"]+'</td>'+
-                     '<td>'+ride["departure"]+'</td>'+
-                     '<td>'+ride["destination"]+'</td>'+
-                     '<td>'+ride["slots"]+'</td>'+
-                     '<td><button onclick="make_request('+ride["ride_id"]+')">Request</button></td>'+
-                    //  '<td><button onclick="view_requests('+ride["ride_id"]+')">View Requests</button></td>'+
-                     '</tr>';
-        all_rides += output;
-      }      
-      document.getElementById('tbody').innerHTML = all_rides;
-      
-    })
-    .catch(function(error){
-        console.log("An error occured", error)
-    })
-}
-
-//making a request
-
-
-function make_request(ride_id){
-  fetch("http://127.0.0.1:5000/rides/"+ride_id+"/requests",{
-        method:"POST",
-        headers:{'Content-Type':'application/json',
-        'Authorization': 'Bearer ' + readCookie('token')
-      }
-    })
-
-  .then(function(response){ 
-    return response.json()
-  })
-  .then(function(data){
-    console.log(data)
-    if(data.message == "Request successfully sent"){
-        alert(data.message);
-        window.location.href ="View requests.html";
-        }
-        else{
-            alert(data.message);
-        }
-     
-  })
-  .catch(function(error){
-        console.log("An error occured", error)
-
-    })
-}
-
-</script>
 </html>
