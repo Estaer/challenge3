@@ -17,8 +17,7 @@ display_requests()
     document.getElementById("rtaken").innerHTML = 0;
       return;
     }
-    var requests = data.requests;
-    var output = requests.length ;
+    var output = data.requests.length ;
     document.getElementById("rtaken").innerHTML = output;
   })
   .catch(function(error){
@@ -47,91 +46,12 @@ fetch("https://my-ride-app.herokuapp.com/currentuser/rides",{
     document.getElementById("rgiven").innerHTML = 0;
       return;
     }
-    var ride_offers = data.ride_offers;
-    var output = ride_offers.length;
+    var output = data.ride_offers.length;
     document.getElementById("rgiven").innerHTML = output;
   })
   .catch(function(error){
       console.log("An error occured", error)
   })
-}
-
-//login
-        formlogin = document.getElementById("formlogin")
-        
-        if(formlogin.addEventListener){
-            formlogin.addEventListener("submit", login, false);  
-        }
-    
-    function login(e){
-        e.preventDefault();
-    
-        fetch("https://my-ride-app.herokuapp.com/auth/login",{
-            method:"POST",
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({
-                    'username':document.getElementById("uname").value,
-                    'password':document.getElementById("pass").value
-            })
-        
-    
-        })
-        .then(function(response){
-            return response.json()
-        })
-        .then(function(data){
-            console.log(data)
-
-            if(data.message=="Successfully logged in"){
-                createCookie("token", data.access_token, 1);
-                window.location.href ="driver.html";  
-            }
-            else{
-                alert(data.message);
-            }
-            
-        })
-        .catch(function(error){
-            console.log("An error occured", error)
-        })
-    }
-    // adding an offer
-    addoffer = document.getElementById("btn_addOffer")
-    
-    if(addoffer.addEventListener){
-      addoffer.addEventListener("submit",addOffer, false);  
-    }
-
-function addOffer(e){
-    e.preventDefault();
-
-    fetch("https://my-ride-app.herokuapp.com/users/rides",{
-        method:"POST",
-        headers:{'Content-Type':'application/json',
-                 'Authorization': 'Bearer ' + readCookie('token')
-                },
-        body:JSON.stringify({
-                'meetingpoint':document.getElementById("meetingpoint").value,
-                'departure':document.getElementById("departure").value,
-                'destination':document.getElementById("destination").value,
-                'slots':document.getElementById("slots").value
-        })
-    
-
-    })
-    .then(function(response){
-        return response.json()
-    })
-    .then(function(data){
-        console.log(data)
-        if(data.message=="Ride offer created"){
-
-            window.location.href ="View ride offers.html";
-        }    
-    })
-    .catch(function(error){
-        console.log("An error occured", error)
-    })
 }
 //view all ride offers
 viewrides();
@@ -323,44 +243,4 @@ function view_requests(ride_id){
         console.log("An error occured", error)
 
     })
-}
-//SIGNUP
-signupform = document.getElementById("signupform")
-    
-if(signupform.addEventListener){
-    signupform.addEventListener("submit", signup, false);  
-}
-
-function signup(e){
-e.preventDefault();
-
-fetch("https://my-ride-app.herokuapp.com/auth/signup",{
-    method:"POST",
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-            'firstname':document.getElementById("fname").value,
-            'lastname':document.getElementById("lname").value,
-            'username':document.getElementById("uname").value,
-            'password':document.getElementById("pass").value
-    })
-
-
-})
-.then(function(response){
-    return response.json()
-})
-.then(function(data){
-    console.log(data)
-    if(data.message=="User registered"){
-        createCookie("token", data.access_token, 1);
-        window.location.href ="index.html";
-    }
-    else{
-        alert(data.message);
-    }
-    
-})
-.catch(function(error){
-    console.log("An error occured", error)
-})
 }
