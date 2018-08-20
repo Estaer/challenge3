@@ -188,16 +188,6 @@ footer{
   
 }
 
-/* .floatbtn{
-
-  position: fixed;
-  bottom: 20px;
-  right: 30px;
-  padding: 5px;
-  z-index: 2;
-  border-radius: 10px;
-  background-color:rgb(214, 160, 150);
-} */
 table{
   margin: auto;
   text-align:center;
@@ -359,3 +349,24 @@ border-radius: 0;
 }
 
 /*......offer ........*/
+/* loader */
+#loader{
+  width: 50px;
+  height: 50px;
+  border: 5px solid #ccc;
+  border-top-color: #35424a;
+  border-radius: 50%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  animation: spin 1s linear infinite;
+  display: none;
+  z-index: 1;
+}
+@keyframes spin{
+  from{transform: rotate(0deg)}
+  to{transform: rotate(360deg)}
+}

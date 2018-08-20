@@ -11,25 +11,26 @@
 
  <div class="loginform"> 
      <h2 class="ridedescription">Signup</h2>
+     <div id="loader"></div>
      <form id="signupform" action="#">
                 <p class="ridedescription" class="ridedescription">First Name</p>
                 <p>
-                    <input class="ridedescription" type="text" id="fname" placeholder="firstname" required/>
+                    <input class="ridedescription" type="text" id="fname" placeholder="firstname" maxlength="20" required/>
                 </p>
 
                 <p class="ridedescription">Last Name</p>
                 <p>
-                    <input class="ridedescription" type="text" id="lname" placeholder="lastname" required />
+                    <input class="ridedescription" type="text" id="lname" placeholder="lastname" maxlength="20" required />
                 </p>
 
                 <p class="ridedescription">Username</p>
                 <p>
-                    <input class="ridedescription" type="text" id="uname" placeholder="username" required/>
+                    <input class="ridedescription" type="text" id="uname" placeholder="username" maxlength="10" required/>
                 </p>
 
                 <p class="ridedescription">Password</p>
                 <p >
-                    <input class="ridedescription" type="password" id="pass" placeholder="password" required/>
+                    <input class="ridedescription" type="password" id="pass" placeholder="password" maxlength="20" required/>
                 </p>
                 <p>
                         <input class="ridedescription" type="submit" id="password" value="Signup" />

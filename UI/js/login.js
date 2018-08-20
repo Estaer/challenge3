@@ -1,14 +1,14 @@
 
 //login
 formlogin = document.getElementById("formlogin")
-        
+var loader = document.getElementById("loader")     
 if(formlogin.addEventListener){
     formlogin.addEventListener("submit", login, false);  
 }
 
 function login(e){
 e.preventDefault();
-
+loader.style.display = "block"
 fetch("https://my-ride-app.herokuapp.com/auth/login",{
     method:"POST",
     headers:{'Content-Type':'application/json'},
