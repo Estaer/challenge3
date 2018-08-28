@@ -86,6 +86,10 @@ class Register(Resource):
         for records in data.values():
             if records.strip() == "":
                 return {"message": "Fill in the missing fields"}, 400
+            
+        for key, value in data.items():
+            if len(value)>49:
+                return {"message":"{0} exceeds the maximum length of 50 characters".format(key)}, 400
 
         if not rides_object.check_existance(data["username"]):
             access_token = rides_object.register_user()
