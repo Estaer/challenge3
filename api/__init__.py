@@ -13,7 +13,6 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
 
 app.config["JWT_SECRET_KEY"] = "GHFVJDFJKSNJKDVNKJSDNKVJJJNDJK"
 jwt = JWTManager(app)
@@ -38,3 +37,4 @@ api.add_resource(Register, "/auth/signup")
 api.add_resource(MakeRequest, "/users/rides/<int:ride_id>/requests",
                  "/rides/<int:ride_id>/requests",
                  "/users/rides/<int:ride_id>/requests/<int:request_id>")
+CORS(api)
